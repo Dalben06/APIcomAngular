@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { EventoService } from '../_Services/Evento.service';
+import { Evento } from '../_models/Evento';
+
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-eventos',
@@ -8,41 +11,59 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EventosComponent implements OnInit {
 
-  eventos: any;
+  eventos: Evento[];
   imagemLargura = 70;
   imagemMargem = 2;
   mostrarImagem = false;
+  // tslint:disable-next-line: variable-name
   _filtroLista: string;
-  eventosFiltrados: any =[];
+  eventosFiltrados: Evento[];
+
+  modalRef: BsModalRef;
+
+
+
+
+
 
   get filtroLista(): string {
     return this._filtroLista;
   }
   set filtroLista(value: string) {
     this._filtroLista = value;
-    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos ;
+    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
 
 
+  // tslint:disable-next-line: variable-name
+  constructor(private _eventoServive: EventoService,
+              private modalService: BsModalService) { }
 
-  constructor(private http: HttpClient) { }
-
-  ngOnInit() { this.getEventos();
+  ngOnInit() {
+    this.getEventos();
   }
+
+  openModal(template: TemplateRef<any>){
+    this.modalRef = this.modalService.show(template);
+  }
+
+
+
 
   alterarImagem() {
     this.mostrarImagem = !this.mostrarImagem;
   }
 
   getEventos() {
-    this.http.get('http://localhost:5000/api/values').subscribe(
-      response => {this.eventos = response; console.log(response);
-      },
-      error => {console.log(error); });
+    this._eventoServive.getEvento().subscribe(
+      // tslint:disable-next-line: variable-name
+      (_eventos: Evento[]) =>
+      { this.eventos = _eventos; console.log(_eventos);this.eventosFiltrados = this.eventos; },
+    error => { console.log(error); });
   }
 
-  filtrarEventos(filtrarPor: string): any{
+  filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
       evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1

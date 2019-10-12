@@ -40,11 +40,11 @@ namespace ProAgil.Repository
                .Include(c => c.Lote)
                .Include(c => c.RedeSocial);
 
-            //if (includePalestrantes == true)
-            //{
-            //    query = query.Include(pe => pe.PalestrantesEvento)
-            //    .ThenInclude(p => p.Palestrante);
-            //}
+            if (includePalestrantes == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEvento)
+                .ThenInclude(p => p.Palestrante);
+            }
 
             query = query.OrderByDescending(c => c.DataEvento);
 
@@ -57,11 +57,11 @@ namespace ProAgil.Repository
                 .Include(c => c.Lote)
                 .Include(c => c.RedeSocial);
 
-            //if (includePalestrantes == true)
-            //{
-            //    query = query.Include(pe => pe.PalestrantesEvento)
-            //    .ThenInclude(p => p.Palestrante);
-            //}
+            if (includePalestrantes == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEvento)
+                .ThenInclude(p => p.Palestrante);
+            }
 
             query = query.OrderByDescending(c => c.DataEvento).Where(x => x.Tema.ToLower().Contains(tema.ToLower()));
 
@@ -75,11 +75,11 @@ namespace ProAgil.Repository
                 .Include(c => c.Lote)
                 .Include(c => c.RedeSocial);
 
-            //if (includePalestrantes == true)
-            //{
-            //    query = query.Include(pe => pe.PalestrantesEvento)
-            //    .ThenInclude(p => p.Palestrante);
-            //}
+            if (includePalestrantes == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEvento)
+                .ThenInclude(p => p.Palestrante);
+            }
 
             query = query.OrderByDescending(c => c.DataEvento).Where(x => x.Id == EventoId);
 
@@ -92,10 +92,11 @@ namespace ProAgil.Repository
         {
             IQueryable<Palestrante> query = _context.Palestrantes.Include(x => x.RedeSocial);
 
-            //if(includeEventos == true){
-            //    query = query.Include(pe => pe.PalestrantesEventos)
-            //    .ThenInclude(p => p.Evento);
-            //} 
+            if (includeEventos == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEventos)
+                .ThenInclude(p => p.Evento);
+            }
 
             query = query.OrderBy(c => c.Nome).Where(x => x.Id == PalestranteId);
 
@@ -110,11 +111,11 @@ namespace ProAgil.Repository
             IQueryable<Palestrante> query = _context.Palestrantes
                 .Include(x => x.RedeSocial);
 
-            //if (includeEventos == true)
-            //{
-            //    query = query.Include(pe => pe.PalestrantesEventos)
-            //    .ThenInclude(p => p.Evento);
-            //}
+            if (includeEventos == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEventos)
+                .ThenInclude(p => p.Evento);
+            }
 
             query = query.OrderBy(c => c.Nome);
 
@@ -126,10 +127,11 @@ namespace ProAgil.Repository
         {
             IQueryable<Palestrante> query = _context.Palestrantes.Include(x => x.RedeSocial);
 
-            //if(includeEventos == true){
-            //    query = query.Include(pe => pe.PalestrantesEventos)
-            //    .ThenInclude(p => p.Evento);
-            //} 
+            if (includeEventos == true)
+            {
+                query = query.Include(pe => pe.PalestrantesEventos)
+                .ThenInclude(p => p.Evento);
+            }
 
             query = query.OrderBy(c => c.Nome).Where(x => x.Nome.ToLower().Contains(Palestrantename.ToLower()));
 
