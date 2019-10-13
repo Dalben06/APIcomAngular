@@ -1,9 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { EventoService } from '../_Services/Evento.service';
 import { Evento } from '../_models/Evento';
+import { Location } from '@angular/common';
+import {  BsModalService,defineLocale, BsLocaleService, ptBrLocale } from 'ngx-bootstrap';
+import { FormGroup,  Validators, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
 
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-
+defineLocale('pt-br', ptBrLocale);
 @Component({
   selector: 'app-eventos',
   templateUrl: './eventos.component.html',
@@ -12,6 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 export class EventosComponent implements OnInit {
 
   eventos: Evento[];
+  evento: Evento;
   imagemLargura = 70;
   imagemMargem = 2;
   mostrarImagem = false;
@@ -19,11 +23,10 @@ export class EventosComponent implements OnInit {
   _filtroLista: string;
   eventosFiltrados: Evento[];
 
-  modalRef: BsModalRef;
+  registerForm: FormGroup;
+  modoSalvar = '';
 
-
-
-
+  bodyDeletarEvento = '';
 
 
   get filtroLista(): string {
@@ -36,20 +39,69 @@ export class EventosComponent implements OnInit {
 
 
 
+
+
+
+
   // tslint:disable-next-line: variable-name
   constructor(private _eventoServive: EventoService,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,
+              private fb: FormBuilder,
+              private localService: BsLocaleService,
+              private location: Location
+              ) { this.localService.use('pt-br'); }
 
   ngOnInit() {
     this.getEventos();
+    this.validation();
   }
 
-  openModal(template: TemplateRef<any>){
-    this.modalRef = this.modalService.show(template);
+  openModal(template: any){
+    this.registerForm.reset();
+    template.show(template);
   }
 
+  salvarAlteracao(template: any) {
+    if (this.registerForm.valid) {
+      if (this.modoSalvar === 'post') {
+        this.evento = Object.assign({}, this.registerForm.value);
+        this._eventoServive.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          },
+          error => { console.log(error); }
+        );
+      }
+    
+    else {
+      this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
+      this._eventoServive.EditEvento(this.evento).subscribe(
+        () => {
+          console.log("Editando");
+          template.hide();
+          this.getEventos();
+        },
+        error => { console.log(error); }
+      );
+    }
+   }
+  }
 
-
+  validation(){
+    this.registerForm = this.fb.group(
+      {
+        tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+        local: ['', Validators.required],
+        dataEvento: ['', [Validators.required]],
+        qtdPessoas: ['', [Validators.required, Validators.max(1200000)]],
+        imagemURL: ['', Validators.nullValidator],
+        telefone: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+      }
+    );
+  }
 
   alterarImagem() {
     this.mostrarImagem = !this.mostrarImagem;
@@ -70,4 +122,44 @@ export class EventosComponent implements OnInit {
     );
   }
 
+
+  getEventoById(id: number): any {
+
+    return this._eventoServive.getEventoById(id).subscribe(
+      // tslint:disable-next-line: variable-name
+      (_eventos: Evento) =>
+      { this.evento = _eventos;
+        console.log(_eventos);
+      },
+      error => { console.log(error); });
+  }
+
+  editarEvento(template: any, evento: Evento) {
+    this.modoSalvar = 'put';
+    this.openModal(template);
+    this.evento = evento;
+    this.registerForm.patchValue(this.evento);
+  }
+
+  novoEvento(template: any) {
+    this.modoSalvar = 'post';
+    this.openModal(template);
+  }
+
+  excluirEvento(template: any, evento: Evento) {
+    this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.tema}`;
+  }
+
+  confirmeDelete(template: any) {
+    this._eventoServive.deleteEvento(this.evento.id).subscribe(
+      () => {
+        template.hide();
+        this.getEventos();
+      }, error => {
+        console.log(error);
+      }
+    );
+  }
 }

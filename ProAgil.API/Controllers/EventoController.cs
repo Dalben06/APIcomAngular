@@ -22,14 +22,14 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _Repository.GetAllEventoAsync(true);
-                return Ok(results); 
+                return Ok(results);
             }
             catch (System.Exception)
             {
-                
+
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
             }
-            
+
         }
 
         [HttpGet("{id}")]
@@ -37,7 +37,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var results = await _Repository.GetEventoAsyncById(id,true);
+                var results = await _Repository.GetEventoAsyncById(id, true);
                 return Ok(results);
             }
             catch (System.Exception)
@@ -52,7 +52,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var results = await _Repository.GetAllEventoAsyncByTema(tema,true);
+                var results = await _Repository.GetAllEventoAsyncByTema(tema, true);
                 return Ok(results);
             }
             catch (System.Exception)
@@ -67,9 +67,9 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-               _Repository.add(model);
-               if(await _Repository.SaveChangesAsync())
-                return Created($"/api/evento/{model.Id}",model);
+                _Repository.add(model);
+                if (await _Repository.SaveChangesAsync())
+                    return Created($"/api/evento/{model.Id}", model);
             }
             catch (System.Exception)
             {
@@ -80,7 +80,7 @@ namespace ProAgil.API.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
+        [HttpPut("{EventoId}")]
         public async Task<IActionResult> Put(int EventoId,Evento model)
         {
             try
@@ -104,12 +104,12 @@ namespace ProAgil.API.Controllers
             return BadRequest();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int EventoId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var evento = await _Repository.GetEventoAsyncById(EventoId,false);
+                var evento = await _Repository.GetEventoAsyncById(id,false);
 
                 if(evento == null)
                 {

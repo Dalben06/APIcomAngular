@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from "@angular/forms";
-import { ModalModule, TooltipModule, BsDropdownModule } from 'ngx-bootstrap';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule  } from 'ngx-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EventoService } from './_Services/Evento.service';
 
@@ -25,9 +26,12 @@ import { NavComponent } from './nav/nav.component';
       BsDropdownModule.forRoot(),
       TooltipModule.forRoot(),
       ModalModule.forRoot(),
+      BsDatepickerModule.forRoot(),
       AppRoutingModule,
       HttpClientModule,
-      FormsModule
+      FormsModule,
+      ReactiveFormsModule,
+      BrowserAnimationsModule,
    ],
    providers: [
       EventoService
