@@ -2,9 +2,9 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { EventoService } from '../_Services/Evento.service';
 import { Evento } from '../_models/Evento';
 import { Location } from '@angular/common';
-import {  BsModalService,defineLocale, BsLocaleService, ptBrLocale } from 'ngx-bootstrap';
+import {  BsModalService, defineLocale, BsLocaleService, ptBrLocale } from 'ngx-bootstrap';
 import { FormGroup,  Validators, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+
 
 defineLocale('pt-br', ptBrLocale);
 @Component({
@@ -56,7 +56,7 @@ export class EventosComponent implements OnInit {
     this.validation();
   }
 
-  openModal(template: any){
+  openModal(template: any) {
     this.registerForm.reset();
     template.show(template);
   }
@@ -74,22 +74,21 @@ export class EventosComponent implements OnInit {
           error => { console.log(error); }
         );
       }
-    
-    else {
-      this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
-      this._eventoServive.EditEvento(this.evento).subscribe(
-        () => {
-          console.log("Editando");
-          template.hide();
-          this.getEventos();
-        },
-        error => { console.log(error); }
-      );
-    }
+      else {
+        this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
+        this._eventoServive.EditEvento(this.evento).subscribe(
+          () => {
+            console.log('Editando');
+            template.hide();
+            this.getEventos();
+          },
+          error => { console.log(error); }
+        );
+      }
    }
   }
 
-  validation(){
+  validation() {
     this.registerForm = this.fb.group(
       {
         tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
@@ -111,7 +110,7 @@ export class EventosComponent implements OnInit {
     this._eventoServive.getEvento().subscribe(
       // tslint:disable-next-line: variable-name
       (_eventos: Evento[]) =>
-      { this.eventos = _eventos; console.log(_eventos);this.eventosFiltrados = this.eventos; },
+       { this.eventos = _eventos; console.log(_eventos); this.eventosFiltrados = this.eventos; },
     error => { console.log(error); });
   }
 
