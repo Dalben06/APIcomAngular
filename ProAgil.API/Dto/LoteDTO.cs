@@ -9,9 +9,7 @@ namespace ProAgil.API.Dto
     public class LoteDTO
     {
         public int Id { get; set; }
-        
         public string Nome { get; set; }
-        [Required]
         public decimal Preco { get; set; }
         
         public string DataInicio { get; set; }

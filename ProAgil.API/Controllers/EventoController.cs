@@ -28,15 +28,13 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _Repository.GetAllEventoAsync(true);
-
                 var eventos = _mapper.Map<IEnumerable<EventoDTO>>(results);
-
                 return Ok(eventos);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou "+ex.Message);
             }
 
         }

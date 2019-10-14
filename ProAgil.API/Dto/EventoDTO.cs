@@ -9,6 +9,7 @@ namespace ProAgil.API.Dto
     public class EventoDTO
     {
         public int Id { get; set; }
+        
         public string DataEvento { get; set; }
         public string Local { get; set; }
         public string Tema { get; set; }
