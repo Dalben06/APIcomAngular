@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProAgil.API.Dto;
 using ProAgil.Domain;
 using ProAgil.Repository;
 
@@ -11,11 +14,12 @@ namespace ProAgil.API.Controllers
     public class PalestranteController : ControllerBase
     {
         public IProAgilRepository _repository { get; }
+        public IMapper _mapper { get; }
 
-        public PalestranteController(IProAgilRepository repository)
+        public PalestranteController(IProAgilRepository repository, IMapper mapper)
         {
             this._repository = repository;
-
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,7 +28,8 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _repository.GetAllPalestrantesAsync(true);
-                return Ok(results); 
+                var palestrates = _mapper.Map<IEnumerable<PalestranteDTO>>(results);
+                return Ok(palestrates); 
             }
             catch (System.Exception)
             {
@@ -40,7 +45,8 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _repository.GetPalestranteAsyncById(id,true);
-                return Ok(results);
+                var palestrate = _mapper.Map<PalestranteDTO>(results);
+                return Ok(palestrate);
             }
             catch (System.Exception)
             {
@@ -55,7 +61,8 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _repository.GetAllPalestrantesAsyncByName(Name,true);
-                return Ok(results);
+                var palestrates = _mapper.Map<IEnumerable<PalestranteDTO>>(results);
+                return Ok(palestrates);
             }
             catch (System.Exception)
             {
@@ -70,7 +77,8 @@ namespace ProAgil.API.Controllers
             try
             {
                 var results = await _repository.GetAllPalestrantesAsyncByName(Name,true);
-                return Ok(results);
+                var palestrates = _mapper.Map<IEnumerable<PalestranteDTO>>(results);
+                return Ok(palestrates);
             }
             catch (System.Exception)
             {
@@ -80,13 +88,15 @@ namespace ProAgil.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Palestrante model)
+        public async Task<IActionResult> Post(PalestranteDTO model)
         {
             try
             {
-                _repository.add(model);
+                var evento = _mapper.Map<Palestrante>(model);
+                _repository.add(evento);
+
                 if (await _repository.SaveChangesAsync())
-                    return Created($"/api/palestrante/{model.Id}", model);
+                    return Created($"/api/palestrante/{evento.Id}", _mapper.Map<Palestrante>(model));
             }
             catch (System.Exception)
             {
@@ -98,7 +108,7 @@ namespace ProAgil.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int Id, Palestrante model)
+        public async Task<IActionResult> Put(int Id, PalestranteDTO model)
         {
             try
             {
@@ -108,6 +118,8 @@ namespace ProAgil.API.Controllers
                 {
                     return NotFound();
                 }
+
+                _mapper.Map(model, palestrante);
                 _repository.Update(model);
                 if (await _repository.SaveChangesAsync())
                     return Created($"/api/palestrante/{model.Id}", model);
