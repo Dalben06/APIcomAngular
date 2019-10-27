@@ -31,6 +31,8 @@ export class EventosComponent implements OnInit {
 
   bodyDeletarEvento = '';
 
+  file: File;
+
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -69,6 +71,8 @@ export class EventosComponent implements OnInit {
     if (this.registerForm.valid) {
       if (this.modoSalvar === 'post') {
         this.evento = Object.assign({}, this.registerForm.value);
+
+        this.uploadImage();
         this._eventoServive.postEvento(this.evento).subscribe(
           (novoEvento: Evento) => {
             console.log(novoEvento);
@@ -85,6 +89,9 @@ export class EventosComponent implements OnInit {
       }
       else {
         this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
+
+        this.uploadImage();
+
         this._eventoServive.EditEvento(this.evento).subscribe(
           () => {
             console.log('Editando');
@@ -108,12 +115,14 @@ export class EventosComponent implements OnInit {
         local: ['', Validators.required],
         dataEvento: ['', [Validators.required]],
         qtdPessoas: ['', [Validators.required, Validators.max(1200000)]],
-        imagemURL: ['', Validators.nullValidator],
+        imagemURL: ['', Validators.required],
         telefone: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
       }
     );
   }
+
+
 
   alterarImagem() {
     this.mostrarImagem = !this.mostrarImagem;
@@ -152,7 +161,8 @@ export class EventosComponent implements OnInit {
   editarEvento(template: any, evento: Evento) {
     this.modoSalvar = 'put';
     this.openModal(template);
-    this.evento = evento;
+    this.evento = Object.assign({}, evento);
+    this.evento.imagemURL = '';
     this.registerForm.patchValue(this.evento);
   }
 
@@ -180,4 +190,22 @@ export class EventosComponent implements OnInit {
       }
     );
   }
+
+  onOpenFile(event){
+    const reader = new FileReader();
+
+    if (event.target.files && event.target.files.length) {
+      this.file = event.target.files;
+      console.log(this.file);
+    }
+  }
+
+  uploadImage(){
+    this._eventoServive.postUpload(this.file).subscribe();
+
+    const nomeArquivo = this.evento.imagemURL.split('\\',3);
+    this.evento.imagemURL = nomeArquivo[2];
+    console.log(this.evento);
+  }
+
 }

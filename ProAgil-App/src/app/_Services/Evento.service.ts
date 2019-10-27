@@ -29,8 +29,17 @@ deleteEvento(id: number): Observable<Evento> {
   return this.http.delete<Evento>(`${this.baseURL}/${id}`);
 }
 
-  EditEvento(model: Evento): Observable<Evento> {
+EditEvento(model: Evento): Observable<Evento> {
     return this.http.put<Evento>(`${this.baseURL}/${model.id}`, model);
-  }
+}
+
+postUpload(file: File){
+
+  const fileToUpload = <File>file[0];
+  const formData = new FormData();
+  formData.append('file', fileToUpload, fileToUpload.name);
+  console.log(fileToUpload);
+  return this.http.post(`${this.baseURL}/upload`, formData);
+}
 
 }
