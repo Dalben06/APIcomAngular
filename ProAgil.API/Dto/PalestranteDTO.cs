@@ -10,12 +10,13 @@ namespace ProAgil.API.Dto
     public class PalestranteDTO
     {
         public int Id { get; set; }
-        
+        [Required]
         public string Nome { get; set; }
         public string MiniCurriculo { get; set; }
         public string ImagemURL { get; set; }
+        [Phone]
         public string Telefone { get; set; }
-
+        [EmailAddress]
         public string Email { get; set; }
 
         public List<EventoDTO> Eventos { get; set; }
