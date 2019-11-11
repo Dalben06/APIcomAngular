@@ -29,7 +29,7 @@
       <th>Data</th>
       <th>Qtd Pessoas</th>
       <th>Lote</th>
-      <th>Opções</th>
+      <th colspan="2">Opções</th>
     </tr>
   </thead>
   <tbody>
@@ -56,7 +56,11 @@
             <i class="fa fa-eraser"></i>
           </button>
         </div>
-
+      </td>
+      <td>
+        <a tooltip="Edição Detalhada" class="btn btn-sm btn-warning" [routerLink]="['/evento',evento.id,'edit']">
+          <i class="fa fa-edit"></i>
+        </a>
       </td>
     </tr>
   </tbody>
