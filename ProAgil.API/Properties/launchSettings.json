@@ -4,7 +4,7 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:4132",
+      "applicationUrl": "https://localhost:44376",
       "sslPort": 44376
     }
   },
@@ -14,7 +14,7 @@
       "launchBrowser": false,
       "launchUrl": "api/evento",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
     "ProAgil.API": {
@@ -23,7 +23,7 @@
       "launchUrl": "api/values",
       "applicationUrl": "https://localhost:44376",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     }
   }

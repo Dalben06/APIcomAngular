@@ -17,7 +17,7 @@ export class EventoEditComponent implements OnInit {
   evento: Evento = new Evento();
   imagemURL = 'assets/img/upload-1.png';
   registerForm: FormGroup;
-  file: File;
+  file: any;
 
   get lotes(): FormArray{
     return <FormArray>this.registerForm.get('lotes');
@@ -104,7 +104,7 @@ export class EventoEditComponent implements OnInit {
     onFileChange(file: FileList) {
       const reader = new FileReader();
       reader.onload = (event: any) => this.imagemURL = event.target.result;
-      this.file = event.target.files;
+      this.file = event.target;
       reader.readAsDataURL(file[0]);
     }
 
