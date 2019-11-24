@@ -11,8 +11,8 @@ export class Evento {
         qtdPessoas: number;
         telefone: string;
         email: string;
-        lote: Lote[];
-        redeSocial: RedeSocial[];
+        lotes: Lote[];
+        redesociais: RedeSocial[];
         palestrantesEvento: Palestrante[];
         imagemURL: string;
 } 

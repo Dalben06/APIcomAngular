@@ -44,8 +44,8 @@
       <td>{{ evento.dataEvento | DateTimeFormatPipe}}</td>
       <td>{{ evento.qtdPessoas }}</td>
       <td>
-        <div *ngIf="!evento.lote.length"> Nao informado</div>
-        <div *ngIf="evento.lote.length"> {{ evento.lote[0].nome | uppercase}}</div>
+        <div *ngIf="!evento.lotes.length"> Nao informado</div>
+        <div *ngIf="evento.lotes.length"> {{ evento.lotes[0].nome | uppercase}}</div>
       </td>
       <td>
         <div class="btn-group">

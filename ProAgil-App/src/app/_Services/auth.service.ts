@@ -20,7 +20,7 @@ login(model: any){
       if (user) {
         localStorage.setItem( 'Token', user.token );
         this.decodedToken = this.jwtHelper.decodeToken(user.token);
-
+        sessionStorage.setItem('username', this.decodedToken.unique_name);
       }
     })
   )

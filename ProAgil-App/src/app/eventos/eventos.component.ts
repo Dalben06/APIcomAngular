@@ -22,7 +22,6 @@ export class EventosComponent implements OnInit {
   imagemLargura = 70;
   imagemMargem = 2;
   mostrarImagem = false;
-  // tslint:disable-next-line: variable-name
   _filtroLista: string;
   eventosFiltrados: Evento[];
 
@@ -88,7 +87,6 @@ export class EventosComponent implements OnInit {
       }
       else {
         this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
-
         this.uploadImage();
 
         this._eventoServive.EditEvento(this.evento).subscribe(
